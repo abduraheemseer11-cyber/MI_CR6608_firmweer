@@ -1,0 +1,21 @@
+#!/bin/sh
+
+[ "$ACTION" = "pressed" ] || exit 0
+[ "$SEEN" -lt 1 ] && exit 0
+
+# فحص ما إذا كان الزر مفعل أم معطل من إعدادات النظام
+RESET_ENABLED=$(uci -q get system.@system[0].reset_button)
+
+if [ "$RESET_ENABLED" = "0" ]; then
+    logger -t reset-button "Reset button is disabled via UCI."
+    exit 0
+fi
+
+if [ "$SEEN" -ge 5 ]; then
+    logger -t reset-button "Factory reset triggered by reset button"
+    jffs2reset -y && reboot &
+else
+    logger -t reset-button "Reboot triggered by reset button"
+    reboot &
+fi
+exit 0
