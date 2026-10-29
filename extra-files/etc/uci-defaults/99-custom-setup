@@ -58,5 +58,7 @@ chmod +x /etc/rc.button/reset
 # 6. تغيير الثيم للون الأزرق (Argon)
 uci set luci.main.mediaurlbase='/luci-static/argon'
 uci commit luci
-
+# إجبار الواجهة على اللغة الإنجليزية
+uci set luci.main.lang='en'
+uci commit luci
 exit 0
