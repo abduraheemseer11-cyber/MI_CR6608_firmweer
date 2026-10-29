@@ -19,6 +19,10 @@ cp -r extra-files/smartdns feeds/packages/net/
 mkdir -p files/etc/uci-defaults
 cp $DEPLOYDIR/uci-scripts/* files/etc/uci-defaults/
 
+# نسخ سكريبت الإعدادات المخصصة الخاص بك (إغلاق DHCP، تغيير الواي فاي، إلخ)
+cp extra-files/etc/uci-defaults/99-custom-setup files/etc/uci-defaults/
+chmod +x files/etc/uci-defaults/99-custom-setup
+
 #设置WIFI
 #sed -i 's/OpenWrt/coolxiaomi/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 #sed -i 's/wireless.default_radio${devidx}.encryption=none/wireless.default_radio${devidx}.encryption=psk-mixed/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
