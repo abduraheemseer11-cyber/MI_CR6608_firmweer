@@ -26,6 +26,10 @@ cp -r extra-files/smartdns feeds/packages/net/
 mkdir -p files/etc/uci-defaults
 cp $DEPLOYDIR/uci-scripts/* files/etc/uci-defaults/
 
+# نسخ سكريبت الإعدادات المخصصة الخاص بك (إغلاق DHCP، تغيير الواي فاي، إلخ)
+cp extra-files/etc/uci-defaults/99-custom-setup files/etc/uci-defaults/
+chmod +x files/etc/uci-defaults/99-custom-setup
+
 #复制内核5.10版本CPU超频补丁
 #cp extra-files/322-mt7621-fix-cpu-clk-add-clkdev.patch target/linux/ramips/patches-5.10/
 
