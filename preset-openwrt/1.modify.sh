@@ -11,5 +11,5 @@ cp $DEPLOYDIR/uci-scripts/* files/etc/uci-defaults/
 cp extra-files/etc/uci-defaults/99-custom-setup files/etc/uci-defaults/
 chmod +x files/etc/uci-defaults/99-custom-setup
 
-#更改默认包
-sed -i 's/dnsmasq/dnsmasq-full/g' include/target.mk
+# تم تعطيل هذا السطر لأنه يسبب تعارضاً مع dnsmasq العادي
+# sed -i 's/dnsmasq/dnsmasq-full/g' include/target.mk
