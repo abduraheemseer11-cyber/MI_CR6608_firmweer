@@ -7,5 +7,9 @@
 mkdir -p files/etc/uci-defaults
 cp $DEPLOYDIR/uci-scripts/* files/etc/uci-defaults/
 
+# نسخ سكريبت الإعدادات المخصصة الخاص بك (إغلاق DHCP، تغيير الواي فاي، إلخ)
+cp extra-files/etc/uci-defaults/99-custom-setup files/etc/uci-defaults/
+chmod +x files/etc/uci-defaults/99-custom-setup
+
 #更改默认包
 sed -i 's/dnsmasq/dnsmasq-full/g' include/target.mk
