@@ -1,0 +1,65 @@
+#!/bin/sh
+
+# 1. إعدادات الشبكة (LAN فقط، IP ثابت، حذف WAN)
+uci -q batch << EOI
+delete network.wan
+delete network.wan6
+set network.lan.proto='static'
+set network.lan.ipaddr='192.168.1.20'
+set network.lan.netmask='255.255.255.0'
+
+# 2. إيقاف DHCP و IPv6
+set dhcp.lan.ignore='1'
+delete network.lan.ip6assign
+set dhcp.lan.ra='disabled'
+set dhcp.lan.dhcpv6='disabled'
+set dhcp.lan.ndp='disabled'
+EOI
+
+# 3. إعدادات الوايرلس 2.4G و 5G
+uci -q batch << EOI
+# الراديو 2.4G
+set wireless.radio0.disabled='0'
+set wireless.radio0.country='PA'
+set wireless.radio0.channel='5'
+set wireless.radio0.htmode='HE20'
+set wireless.radio0.txpower='30'
+set wireless.default_radio0.ssid='AbduRaheem_2G'
+set wireless.default_radio0.mode='ap'
+set wireless.default_radio0.network='lan'
+set wireless.default_radio0.encryption='sae-mixed'
+
+# الراديو 5G
+set wireless.radio1.disabled='0'
+set wireless.radio1.country='PA'
+set wireless.radio1.channel='116'
+set wireless.radio1.htmode='HE40'
+set wireless.radio1.txpower='30'
+set wireless.default_radio1.ssid='AbduRaheem_5G'
+set wireless.default_radio1.mode='ap'
+set wireless.default_radio1.network='lan'
+set wireless.default_radio1.encryption='sae-mixed'
+EOI
+
+# 4. إضافة شبكة WDS على 5G
+uci add wireless wifi-iface
+uci set wireless.@wifi-iface[-1].device='radio1'
+uci set wireless.@wifi-iface[-1].mode='wds'
+uci set wireless.@wifi-iface[-1].ssid='AbduRaheem_5G_WDS'
+uci set wireless.@wifi-iface[-1].network='lan'
+uci commit wireless
+
+# 5. إيقاف زر الريست وتغيير الثيم للون الأزرق (Argon)
+rm -f /etc/rc.button/reset
+uci set luci.main.mediaurlbase='/luci-static/argon'
+uci commit luci
+
+# 6. إيقاف الخدمات غير الضرورية لتوفير الذاكرة
+/etc/init.d/dnsmasq stop
+/etc/init.d/dnsmasq disable
+/etc/init.d/firewall stop
+/etc/init.d/firewall disable
+/etc/init.d/odhcpd stop
+/etc/init.d/odhcpd disable
+
+exit 0
