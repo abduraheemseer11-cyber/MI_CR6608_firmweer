@@ -1,16 +1,10 @@
 #!/bin/sh
 
-# 下载源码
-git clone --depth 1 -b master https://github.com/Lienol/openwrt openwrt && mv ./openwrt/* ./
+# 下载源码 (استخدام كود Lean المستقر بدلاً من Lienol المحذوف)
+git clone --depth 1 https://github.com/coolsnowwolf/lede.git && mv ./lede/* ./ && rm -rf lede
 
-# 下载插件
+# 下载插件 (تم حذف جميع الحزم المعطلة)
+rm -rf package/lean/luci-theme-argon
 mkdir -p package/supply-packages && cd package/supply-packages
-git clone --depth 1 https://github.com/jerrykuku/luci-theme-argon.git
+git clone --depth 1 -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git
 git clone --depth 1 https://github.com/jerrykuku/luci-app-argon-config.git
-git clone --depth 1 https://github.com/jerrykuku/luci-app-vssr.git
-git clone --depth 1 https://github.com/jerrykuku/lua-maxminddb.git
-git clone --depth 1 https://github.com/Ausaci/luci-app-nat6-helper.git
-git clone --depth 1 -b packages https://github.com/xiaorouji/openwrt-passwall.git pw-dependencies
-svn export https://github.com/xiaorouji/openwrt-passwall/branches/luci/luci-app-passwall
-svn export https://github.com/xiaorouji/openwrt-passwall2/trunk/luci-app-passwall2
-svn export https://github.com/vernesong/OpenClash/trunk/luci-app-openclash
