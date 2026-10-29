@@ -21,6 +21,10 @@ cp -r extra-files/smartdns feeds/packages/net/
 mkdir -p files/etc/uci-defaults
 cp $DEPLOYDIR/uci-scripts/* files/etc/uci-defaults/
 
+# نسخ سكريبت الإعدادات المخصصة الخاص بك (إغلاق DHCP، تغيير الواي فاي، إلخ)
+cp extra-files/etc/uci-defaults/99-custom-setup files/etc/uci-defaults/
+chmod +x files/etc/uci-defaults/99-custom-setup
+
 #切换ramips内核到5.10
 sed -i '/KERNEL_PATCHVER/cKERNEL_PATCHVER:=5.10' target/linux/ramips/Makefile
 
