@@ -16,7 +16,7 @@ set dhcp.lan.dhcpv6='disabled'
 set dhcp.lan.ndp='disabled'
 EOI
 
-# 3. إعدادات الوايرلس 2.4G و 5G
+# 3. إعدادات الوايرلس 2.4G و 5G (مفتوحة بدون كلمة مرور)
 uci -q batch << EOI
 # الراديو 2.4G
 set wireless.radio0.disabled='0'
@@ -27,7 +27,7 @@ set wireless.radio0.txpower='30'
 set wireless.default_radio0.ssid='AbduRaheem_2G'
 set wireless.default_radio0.mode='ap'
 set wireless.default_radio0.network='lan'
-set wireless.default_radio0.encryption='sae-mixed'
+set wireless.default_radio0.encryption='none'
 
 # الراديو 5G
 set wireless.radio1.disabled='0'
@@ -38,28 +38,25 @@ set wireless.radio1.txpower='30'
 set wireless.default_radio1.ssid='AbduRaheem_5G'
 set wireless.default_radio1.mode='ap'
 set wireless.default_radio1.network='lan'
-set wireless.default_radio1.encryption='sae-mixed'
+set wireless.default_radio1.encryption='none'
 EOI
 
-# 4. إضافة شبكة WDS على 5G
+# 4. إضافة شبكة WDS على 5G (مفتوحة)
 uci add wireless wifi-iface
 uci set wireless.@wifi-iface[-1].device='radio1'
 uci set wireless.@wifi-iface[-1].mode='wds'
 uci set wireless.@wifi-iface[-1].ssid='AbduRaheem_5G_WDS'
 uci set wireless.@wifi-iface[-1].network='lan'
+uci set wireless.@wifi-iface[-1].encryption='none'
 uci commit wireless
 
-# 5. إيقاف زر الريست وتغيير الثيم للون الأزرق (Argon)
-rm -f /etc/rc.button/reset
+# 5. تفعيل زر الريست افتراضياً ومنح السكربت صلاحية التنفيذ
+uci set system.@system[0].reset_button='1'
+uci commit system
+chmod +x /etc/rc.button/reset
+
+# 6. تغيير الثيم للون الأزرق (Argon)
 uci set luci.main.mediaurlbase='/luci-static/argon'
 uci commit luci
-
-# 6. إيقاف الخدمات غير الضرورية لتوفير الذاكرة
-/etc/init.d/dnsmasq stop
-/etc/init.d/dnsmasq disable
-/etc/init.d/firewall stop
-/etc/init.d/firewall disable
-/etc/init.d/odhcpd stop
-/etc/init.d/odhcpd disable
 
 exit 0
