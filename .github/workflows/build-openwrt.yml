@@ -80,12 +80,12 @@ jobs:
           df -h
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: 环境准备
         run: |
           sudo apt-get update
-          sudo apt-get -y install gcc-multilib gettext libncurses5-dev
+          sudo apt-get -y install gcc-multilib gettext libncurses5-dev subversion
           sudo apt-get clean
           pip3 install -r extra-files/requirements-transit.txt
 
@@ -185,7 +185,7 @@ jobs:
 
       - name: 上传固件到artifact
         if: inputs.artifact == true || steps.to-release.outcome != 'success'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: collected_firmware
           path: |
