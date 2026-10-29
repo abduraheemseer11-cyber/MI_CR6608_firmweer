@@ -16,13 +16,17 @@ set dhcp.lan.dhcpv6='disabled'
 set dhcp.lan.ndp='disabled'
 EOI
 
+# حفظ تعديلات الشبكة والـ DHCP
+uci commit network
+uci commit dhcp
+
 # 3. إعدادات الوايرلس 2.4G و 5G (مفتوحة بدون كلمة مرور)
 uci -q batch << EOI
 # الراديو 2.4G
 set wireless.radio0.disabled='0'
 set wireless.radio0.country='PA'
 set wireless.radio0.channel='5'
-set wireless.radio0.htmode='HE20'
+set wireless.radio0.htmode='HT20'
 set wireless.radio0.txpower='30'
 set wireless.default_radio0.ssid='AbduRaheem_2G'
 set wireless.default_radio0.mode='ap'
@@ -33,7 +37,7 @@ set wireless.default_radio0.encryption='none'
 set wireless.radio1.disabled='0'
 set wireless.radio1.country='PA'
 set wireless.radio1.channel='116'
-set wireless.radio1.htmode='HE40'
+set wireless.radio1.htmode='VHT80'
 set wireless.radio1.txpower='30'
 set wireless.default_radio1.ssid='AbduRaheem_5G'
 set wireless.default_radio1.mode='ap'
@@ -58,7 +62,11 @@ chmod +x /etc/rc.button/reset
 # 6. تغيير الثيم للون الأزرق (Argon)
 uci set luci.main.mediaurlbase='/luci-static/argon'
 uci commit luci
+
 # إجبار الواجهة على اللغة الإنجليزية
 uci set luci.main.lang='en'
 uci commit luci
+
+# تطبيق التغييرات فوراً (اختياري ولكنه مفيد لضمان الاستقرار)
+wifi reload
 exit 0
