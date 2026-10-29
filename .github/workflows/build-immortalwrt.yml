@@ -65,6 +65,7 @@ jobs:
   build:
     name: 固件编译
     if: inputs.build == 'true'
+    # تم التغيير إلى ubuntu-22.04 لحل مشكلة عدم توافق المترجم مع حزمة m4
     runs-on: ubuntu-22.04
     env:
       TEMP_PREFIX: temp
