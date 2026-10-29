@@ -80,12 +80,12 @@ jobs:
           df -h
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: 环境准备
         run: |
           sudo apt-get update
-          sudo apt-get -y install gcc-multilib gettext libncurses5-dev subversion
+          sudo apt-get -y install gcc-multilib gettext libncurses5-dev coreutils
           sudo apt-get clean
           pip3 install -r extra-files/requirements-transit.txt
 
