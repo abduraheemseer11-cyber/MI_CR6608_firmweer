@@ -69,7 +69,8 @@ jobs:
   build:
     name: 固件编译
     if: inputs.build == 'true'
-    runs-on: ubuntu-latest
+    # تم التغيير إلى ubuntu-22.04 لحل مشاكل التوافق
+    runs-on: ubuntu-22.04
     env:
       TEMP_PREFIX: temp
       DEPLOYDIR: preset-openwrt
@@ -85,7 +86,9 @@ jobs:
       - name: 环境准备
         run: |
           sudo apt-get update
-          sudo apt-get -y install gcc-multilib gettext libncurses5-dev coreutils
+          sudo apt-get -y install gcc-multilib gettext libncurses5-dev coreutils \
+            build-essential unzip bzip2 wget curl python3-distutils rsync \
+            libssl-dev libelf-dev zlib1g-dev patch git file swig
           sudo apt-get clean
           pip3 install -r extra-files/requirements-transit.txt
 
@@ -125,7 +128,8 @@ jobs:
           DOT_CONFIG: ${{ env.DEPLOYDIR }}/${{ env.TEMP_PREFIX }}.config
         run: |
           mv $DOT_CONFIG .config
-          make defconfig
+          # تمت إضافة FORCE=1 لتخطي فحص أداة install الذي يفشل في بيئة GitHub
+          make defconfig FORCE=1
 
       - name: 下载编译资源
         run: |
